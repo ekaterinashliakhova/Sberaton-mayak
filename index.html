@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Sber API Маяк v6 — адаптивное demo 1С / ERP / СберCRM</title>
+<title>Sber API Маяк v9 — mobile fixed demo 1С / ERP / СберCRM</title>
 <style>
 :root{
   --bg:#eef2ef;--surface:#fff;--surface-2:#f6f8f7;--ink:#16221d;--muted:#718078;--line:#dfe6e2;
@@ -123,6 +123,155 @@ button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!impo
 .forward-search{width:100%;height:38px;border:1px solid #dce4df;border-radius:11px;padding:0 11px;margin-top:10px;font:inherit;font-size:12px;outline:none;background:#fbfcfb}.forward-search:focus{border-color:#70c99a;box-shadow:0 0 0 3px #16b86c14}.forward-center-hero{border-radius:14px;padding:14px;background:linear-gradient(145deg,#0f3d2a,#0b7250);color:#fff;margin-bottom:10px}.forward-center-hero small{color:#bdebd1}.forward-center-hero h3{margin:4px 0 5px;font-size:16px}.forward-center-hero p{margin:0;color:#dbf1e5;font-size:11px;line-height:1.45}.forward-log{display:grid;gap:8px}.forward-log-card{border:1px solid #e0e9e4;border-radius:13px;background:#fff;padding:11px}.forward-log-card h4{font-size:12px;margin:0 0 4px}.forward-log-card p{font-size:10px;color:#68776f;margin:0 0 8px;line-height:1.4}.forward-log-meta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}.forward-log-actions{display:flex;gap:6px;flex-wrap:wrap}.forward-log-actions button{border:0;border-radius:8px;padding:7px 9px;font-size:10px}.forward-log-actions .primary{background:#113c2b;color:#fff}.forward-log-actions .secondary{background:#edf3ef;color:#526159}.forward-empty{border:1px dashed #cfdcd4;border-radius:14px;padding:16px;background:#f8fbf9;text-align:center}.forward-empty b{display:block;font-size:13px;margin-bottom:4px}.forward-empty p{font-size:10px;color:#738178;margin:0 0 10px}.forward-empty button{border:0;border-radius:9px;background:#113c2b;color:#fff;padding:8px 10px;font-size:10px}
 @media(max-width:650px){.event-top{gap:7px}.event-top>.badge{max-width:44%;font-size:9px;padding:4px 7px}.forward-user{grid-template-columns:20px 1fr}.forward-role{grid-column:2;justify-self:start}.event-actions .forward-btn{order:4}.smart-push .push-actions button{min-height:34px}.demo-modal{padding:16px}.forward-user-list{max-height:38dvh;overflow:auto}.forward-log-actions button{min-height:36px}.forward-center-hero{padding:12px}}
 
+
+/* v8 — laptop / desktop visibility fix: no cropped cards */
+@media (min-width:651px){
+  #mayak-layer{overflow:visible}
+  .mayak-drawer{
+    position:absolute;
+    right:20px;
+    bottom:18px;
+    width:clamp(590px,48vw,720px);
+    max-width:calc(100vw - 40px);
+    height:min(760px,calc(100dvh - 90px));
+    max-height:calc(100dvh - 90px);
+    min-height:420px;
+    grid-template-rows:auto auto minmax(0,1fr);
+    overflow:hidden;
+  }
+  .drawer-head,.drawer-tabs,.drawer-body{min-width:0}
+  .drawer-tabs{
+    overflow-x:auto;
+    overflow-y:hidden;
+    flex-wrap:nowrap;
+    scrollbar-width:none;
+    overscroll-behavior-inline:contain;
+  }
+  .drawer-tabs::-webkit-scrollbar{display:none}
+  .drawer-tabs button{flex:0 0 auto;white-space:nowrap}
+  .drawer-body{
+    min-height:0;
+    min-width:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    scrollbar-gutter:stable;
+    overscroll-behavior:contain;
+  }
+  .system-summary,.event-list,.detail-panel,.status-card,.calendar-list,.forward-log{min-width:0;width:100%}
+  .event-card,.forward-log-card,.calendar-row,.summary-tile{min-width:0;max-width:100%;width:100%;overflow:hidden}
+  .event-top{min-width:0;align-items:flex-start}
+  .event-top>div:first-child{min-width:0;flex:1 1 auto}
+  .event-card h3,.event-card p,.source,.event-kicker,.detail-hero h3,.detail-hero p,.calendar-copy,.forward-log-card h4,.forward-log-card p{
+    overflow-wrap:anywhere;
+    word-break:normal;
+  }
+  .event-top>.badge{max-width:210px;flex:0 1 auto}
+  .event-actions,.detail-buttons,.forward-log-actions{flex-wrap:wrap}
+  .event-actions button,.detail-buttons button,.forward-log-actions button{max-width:100%;white-space:normal}
+  .drawer-active .mayak-launch{opacity:0;visibility:hidden;pointer-events:none;transform:translateX(22px) scale(.92)}
+  .drawer-active .mayak-beam{opacity:0!important}
+  .mayak-launch{transition:opacity .18s ease,transform .18s ease,visibility .18s}
+}
+
+/* Common laptop resolutions: give content a little more air while keeping the host system visible */
+@media (min-width:901px) and (max-width:1440px){
+  .mayak-drawer{width:min(700px,56vw);right:16px;bottom:14px;height:calc(100dvh - 82px);max-height:calc(100dvh - 82px)}
+  .drawer-head{padding:14px 16px 8px}
+  .drawer-tabs{padding:0 14px 9px}
+  .drawer-body{padding:11px 12px 14px}
+  .event-card{padding:11px}
+  .system-summary{gap:7px;margin-bottom:8px}
+  .summary-tile{padding:9px 10px}
+}
+
+/* Short laptop screens: scrolling stays inside Mayak instead of clipping the last card */
+@media (min-width:651px) and (max-height:780px){
+  .mayak-drawer{top:10px;bottom:10px;height:auto;max-height:none;min-height:0}
+  .drawer-head{padding-top:12px}
+  .drawer-body{padding-bottom:12px}
+}
+
+
+
+/* ===== v9 — mobile interaction rebuild ===== */
+@media (max-width:720px){
+  html,body{min-height:100%;width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;}
+  body{overscroll-behavior-y:none}
+  body.mayak-mobile-open{overflow:hidden;position:fixed;inset:0;width:100%}
+  button,[role="button"],label,select{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  button{min-width:0}
+
+  /* host shell */
+  .demo-bar{min-height:98px!important;padding:calc(7px + env(safe-area-inset-top)) 8px 7px!important;grid-template-columns:minmax(0,1fr) minmax(126px,154px)!important;gap:6px 8px!important;z-index:200!important}
+  .demo-brand{overflow:hidden}.demo-brand>div:last-child{min-width:0}.demo-brand b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px!important}
+  .role-select{min-height:42px!important;font-size:13px!important;max-width:none!important;width:100%!important}
+  .platform-switch{gap:3px!important}.platform-switch button{min-height:42px!important;font-size:12px!important;padding:7px 4px!important}
+  .surface{min-height:calc(100dvh - 98px)!important}
+  .onec,.erp,.crm{max-width:100vw;overflow-x:hidden}
+  .onec-main,.erp-main,.crm-main{min-width:0;max-width:100vw;padding-left:9px!important;padding-right:9px!important}
+  .form-card,.erp-card,.crm-card,.kpi{min-width:0;max-width:100%;overflow:hidden}
+  .field{font-size:16px!important;min-width:0}
+  .summary-row>div:last-child{grid-template-columns:1fr!important}.summary-row .tool-btn{min-height:46px!important}
+  .erp-kpis{grid-template-columns:1fr 1fr!important}.erp-head{flex-wrap:wrap}.erp-head .badge{max-width:100%}
+  .company-head>div:last-child{display:grid!important;grid-template-columns:1fr!important;gap:7px!important}.company-head .tool-btn{width:100%!important;min-height:44px!important}
+  .crm-head{top:98px!important}
+
+  /* Mayak floating trigger: compact tap target, no huge invisible overlay */
+  #mayak-layer{position:fixed!important;inset:0!important;z-index:900!important;pointer-events:none!important;overflow:visible!important}
+  .mayak-launch{position:fixed!important;right:12px!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;width:62px!important;height:62px!important;min-height:62px!important;border-radius:50%!important;background:rgba(255,255,255,.98)!important;border:1px solid #cfe2d7!important;box-shadow:0 10px 28px rgba(15,64,42,.22)!important;z-index:920!important;pointer-events:auto!important;display:grid!important;place-items:center!important;padding:0!important;overflow:hidden!important}
+  .mayak-launch .mk-label{display:none!important}
+  .mayak-launch .mk-lighthouse{position:absolute!important;left:50%!important;bottom:-18px!important;margin:0!important;transform:translateX(-50%) scale(.52)!important;transform-origin:bottom center!important}
+  .mayak-launch:hover .mk-lighthouse,.mayak-launch.attention .mk-lighthouse{transform:translateX(-50%) scale(.52)!important}
+  .mayak-beam{display:none!important}
+  .drawer-active .mayak-launch{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+
+  /* Full-screen Mayak on phones */
+  .mayak-drawer{position:fixed!important;inset:0!important;left:0!important;right:0!important;top:0!important;bottom:0!important;width:100vw!important;max-width:100vw!important;height:100dvh!important;max-height:100dvh!important;min-height:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:#fff!important;z-index:950!important;pointer-events:auto!important;display:grid!important;grid-template-rows:auto auto minmax(0,1fr)!important;overflow:hidden!important;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)!important;animation:mayakMobileFullIn .22s ease-out!important;transform:none!important}
+  .mayak-drawer.hidden{display:none!important}
+  @keyframes mayakMobileFullIn{from{opacity:.2;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .drawer-head{position:relative!important;z-index:3!important;min-height:66px!important;padding:12px 12px 8px!important;background:#fff!important;border-bottom:1px solid #edf1ef!important}
+  .drawer-head:before{display:none!important}.drawer-head .sub{font-size:9px!important;padding:0!important;max-width:calc(100vw - 72px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.drawer-head h2{font-size:21px!important;margin-top:2px!important}
+  .drawer-close{width:44px!important;height:44px!important;min-height:44px!important;border-radius:13px!important;font-size:23px!important;flex:0 0 44px!important;touch-action:manipulation!important}
+  .drawer-tabs{position:relative!important;z-index:2!important;display:flex!important;gap:5px!important;padding:8px 10px 9px!important;overflow-x:auto!important;overflow-y:hidden!important;flex-wrap:nowrap!important;background:#fff!important;border-bottom:1px solid #e7ede9!important;scrollbar-width:none!important;-webkit-overflow-scrolling:touch!important;scroll-snap-type:x proximity!important}
+  .drawer-tabs::-webkit-scrollbar{display:none!important}.drawer-tabs button{flex:0 0 auto!important;min-height:42px!important;padding:9px 12px!important;font-size:11px!important;border-radius:10px!important;white-space:nowrap!important;scroll-snap-align:start!important}
+  .drawer-body{min-width:0!important;min-height:0!important;width:100%!important;height:auto!important;overflow-y:auto!important;overflow-x:hidden!important;padding:10px 10px calc(20px + env(safe-area-inset-bottom))!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important;background:#f7f9f8!important}
+  .system-summary,.event-list,.detail-panel,.status-card,.calendar-list,.forward-log{width:100%!important;max-width:100%!important;min-width:0!important}
+  .system-summary{grid-template-columns:1fr!important;gap:8px!important}.summary-tile{min-width:0!important;padding:11px!important}
+  .event-list{gap:9px!important}.event-card,.forward-log-card,.calendar-row{width:100%!important;max-width:100%!important;min-width:0!important;overflow:hidden!important;border-radius:14px!important;padding:12px!important}
+  .event-top{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important;min-width:0!important}.event-top>div{min-width:0!important}.event-top>.badge{justify-self:start!important;max-width:100%!important;width:auto!important;font-size:10px!important;padding:5px 9px!important;white-space:normal!important;overflow-wrap:anywhere!important}
+  .event-card h3{font-size:15px!important;line-height:1.3!important;overflow-wrap:anywhere!important}.event-card p,.source{font-size:12px!important;line-height:1.5!important;overflow-wrap:anywhere!important}
+  .event-meta{gap:5px!important}.pill,.badge,.status-chip,.source-badge,.registration-state,.completion-chip{max-width:100%!important;white-space:normal!important;overflow-wrap:anywhere!important}
+  .event-actions,.detail-buttons,.forward-log-actions{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;width:100%!important}.event-actions button,.detail-buttons button,.forward-log-actions button{width:100%!important;min-height:46px!important;padding:10px 12px!important;font-size:12px!important;white-space:normal!important;touch-action:manipulation!important}
+  .event-actions button:nth-child(n){grid-column:1!important}.event-actions .forward-btn{order:initial!important}
+  .detail-hero{padding:14px!important;border-radius:14px!important}.detail-hero h3{font-size:18px!important}.detail-hero p{font-size:12px!important}.compare{grid-template-columns:1fr!important}.compare>div{padding:12px!important}.explain{font-size:12px!important;padding:12px!important}.back-link{min-height:44px!important;font-size:12px!important}
+  .status-scale{grid-template-columns:1fr 1fr!important;gap:7px!important}.metric-grid{grid-template-columns:1fr 1fr!important;gap:7px!important}.metric{min-width:0!important;padding:10px 8px!important}
+  .calendar-row{display:grid!important;grid-template-columns:54px minmax(0,1fr)!important;gap:9px!important}.calendar-row>button{grid-column:1/-1!important;width:100%!important;min-height:44px!important}
+  .sberpro-hero{padding:13px!important}.event-toolbar{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}.event-toolbar .sync{width:100%!important;min-height:44px!important}
+
+  /* smart pushes never cover the whole screen */
+  .push-stack{position:fixed!important;left:8px!important;right:8px!important;top:calc(104px + env(safe-area-inset-top))!important;width:auto!important;max-height:calc(100dvh - 180px)!important;overflow-y:auto!important;z-index:930!important;pointer-events:none!important;padding-bottom:8px!important}
+  .smart-push{pointer-events:auto!important;grid-template-columns:36px minmax(0,1fr) 36px!important;gap:8px!important;padding:10px!important;border-radius:14px!important}.push-icon{width:36px!important;height:36px!important}.push-copy{min-width:0!important}.push-copy b{font-size:13px!important;overflow-wrap:anywhere!important}.push-copy p{font-size:11px!important;line-height:1.35!important;max-height:46px!important;overflow:hidden!important}.push-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important}.push-actions button{min-height:38px!important;font-size:11px!important;padding:7px 8px!important}.push-x{width:36px!important;height:36px!important;min-height:36px!important}
+
+  /* modals, especially forwarding, must sit ABOVE Mayak */
+  .demo-modal-backdrop{position:fixed!important;inset:0!important;z-index:2000!important;display:flex!important;align-items:flex-end!important;justify-content:stretch!important;padding:0!important;background:rgba(10,29,20,.42)!important;pointer-events:auto!important}
+  .demo-modal{width:100%!important;max-width:100%!important;max-height:92dvh!important;margin:0!important;border-radius:22px 22px 0 0!important;border-left:0!important;border-right:0!important;border-bottom:0!important;padding:16px 14px calc(14px + env(safe-area-inset-bottom))!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;box-shadow:0 -18px 50px rgba(11,46,29,.24)!important}
+  .demo-modal-head{gap:10px!important}.demo-modal-head h3{font-size:19px!important}.demo-modal-x{width:44px!important;height:44px!important;min-height:44px!important;flex:0 0 44px!important;border-radius:13px!important;font-size:22px!important}.demo-modal-body{font-size:13px!important;margin-top:10px!important}.demo-modal-actions{display:grid!important;grid-template-columns:1fr!important;gap:8px!important;position:sticky!important;bottom:calc(-14px - env(safe-area-inset-bottom))!important;background:#fff!important;padding:10px 0 calc(10px + env(safe-area-inset-bottom))!important;margin-top:12px!important}.demo-modal-actions button{width:100%!important;min-height:48px!important;font-size:13px!important}
+  .forward-search,.forward-note{width:100%!important;max-width:100%!important;font-size:16px!important}.forward-user-list{max-height:42dvh!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}.forward-user{min-height:58px!important;padding:10px!important;gap:9px!important}.forward-user input{width:20px!important;height:20px!important}.forward-role{white-space:normal!important;text-align:left!important}
+
+  .toast{z-index:2100!important;left:8px!important;right:8px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;min-height:42px!important;display:grid!important;place-items:center!important;font-size:11px!important}
+}
+@media (max-width:390px){
+  .demo-bar{grid-template-columns:minmax(0,1fr) minmax(118px,142px)!important}
+  .erp-kpis{grid-template-columns:1fr!important}
+  .status-scale,.metric-grid{grid-template-columns:1fr!important}
+  .push-actions{grid-template-columns:1fr!important}
+  .mayak-drawer{width:100vw!important;height:100dvh!important}
+}
+@media (orientation:landscape) and (max-height:520px) and (max-width:900px){
+  .mayak-drawer{inset:0!important;width:100vw!important;height:100dvh!important}
+  .drawer-head{min-height:54px!important;padding:7px 10px 6px!important}.drawer-head h2{font-size:18px!important}.drawer-tabs{padding:5px 8px 6px!important}.drawer-tabs button{min-height:38px!important;padding:7px 10px!important}.drawer-body{padding-top:7px!important}
+  .mayak-launch{width:56px!important;height:56px!important}.push-stack{top:8px!important}
+}
 </style>
 </head>
 <body>
@@ -262,8 +411,8 @@ const MayakDemo=(()=>{
   function showPush(id){const e=events[id];if(!e)return;const node=document.createElement('article');node.className=`smart-push severity-${e.severity}`;node.innerHTML=`<div class="push-icon">${e.icon}</div><div class="push-copy"><small>Sber API · Маяк · ${e.type}</small><b>${e.title}</b><p>${e.short}</p><div class="push-actions"><button class="open">Подробнее</button><button class="forward">Переслать</button><button class="later">Позже</button></div></div><button class="push-x">×</button>`;$('#pushStack').prepend(node);node.querySelector('.open').onclick=()=>{openDrawer();openDetail(id);dismissPush(node)};node.querySelector('.forward').onclick=()=>showForwardModal(id);node.querySelector('.later').onclick=()=>dismissPush(node);node.querySelector('.push-x').onclick=()=>dismissPush(node);$('#mayakLaunch').classList.add('attention');flashBeam();setTimeout(()=>{if(node.isConnected)dismissPush(node)},9500)}
   function dismissPush(node){node.classList.add('removing');setTimeout(()=>node.remove(),250)}
   function flashBeam(){const b=$('#mayakBeam');b.classList.add('on');setTimeout(()=>b.classList.remove('on'),900)}
-  function openDrawer(tab){drawerOpen=true;$('#mayakDrawer').classList.remove('hidden');$('#mayakLaunch').classList.remove('attention');if(tab)setTab(tab);else renderCurrent()}
-  function closeDrawer(){drawerOpen=false;$('#mayakDrawer').classList.add('hidden');$('#detailPanel').classList.remove('active');$('#eventList').classList.remove('hidden')}
+  function openDrawer(tab){drawerOpen=true;$('#mayakDrawer').classList.remove('hidden');$('#mayak-layer').classList.add('drawer-active');if(window.matchMedia('(max-width:720px)').matches)document.body.classList.add('mayak-mobile-open');$('#mayakLaunch').classList.remove('attention');if(tab)setTab(tab);else renderCurrent()}
+  function closeDrawer(){drawerOpen=false;$('#mayakDrawer').classList.add('hidden');$('#mayak-layer').classList.remove('drawer-active');document.body.classList.remove('mayak-mobile-open');$('#detailPanel').classList.remove('active');$('#eventList').classList.remove('hidden')}
   function summaryHtml(){const c=statusConfig[client.status];return `<div class="system-summary"><div class="summary-tile"><small>Статус компании в Маяке</small><b>${c.label}</b><div class="status-track"><i style="width:${client.statusScore}%"></i></div><small style="margin-top:5px">Активность: ${client.statusScore}/100 · доступ к преимуществам</small></div><div class="summary-tile"><small>Настроенность сервиса</small><b>${client.serviceSetup}%</b><div class="status-track"><i style="width:${client.serviceSetup}%"></i></div><small style="margin-top:5px">Это прогресс настройки, не рейтинг клиента</small></div></div>`}
   function visibleIds(){
     if(currentTab==='changes')return Object.keys(events).filter(id=>events[id].category==='change'&&events[id].roles.includes(role));
@@ -402,7 +551,7 @@ const MayakDemo=(()=>{
     $$('#platformSwitch button').forEach(b=>b.onclick=()=>switchPlatform(b.dataset.platform));
     $('#roleSelect').onchange=e=>{role=e.target.value;renderCurrent();toast('Маяк адаптировал поток под роль: '+roleNames[role])};
     $('#demoPushBtn').onclick=()=>showPush((roleEvents[role]||['tariff']).find(id=>events[id].platforms.includes(platform))||'tariff');
-    $('#mayakLaunch').onclick=()=>drawerOpen?closeDrawer():openDrawer();$('#drawerClose').onclick=closeDrawer;$$('.drawer-tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+    $('#mayakLaunch').onclick=()=>drawerOpen?closeDrawer():openDrawer();$('#drawerClose').onclick=closeDrawer;$$('.drawer-tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));window.addEventListener('resize',()=>{if(!window.matchMedia('(max-width:720px)').matches)document.body.classList.remove('mayak-mobile-open')});document.addEventListener('keydown',e=>{if(e.key==='Escape'){const m=document.querySelector('.demo-modal-backdrop');if(m)m.remove();else if(drawerOpen)closeDrawer();}});
 
     $('#paymentAmount').addEventListener('input',()=>{const a=Number($('#paymentAmount').value||0);$('#debitSum').textContent=fmt(a);$('#commissionInline').textContent='Сумма изменилась — Маяк пересчитает комиссию'});
     $('#paymentAmount').addEventListener('change',()=>calcFee(true));$('#calcFeeBtn').onclick=()=>calcFee(true);
